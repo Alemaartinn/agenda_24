@@ -49,20 +49,25 @@ public class Libreta{
         }
     }
 
-    public Libreta annadirContacto(Contacto contacto) {
+    public Libreta annadirContacto(Contacto contacto)throws ExcepcionDuplicado {
+       if(contactos.contains(contacto)){
+        throw new ExcepcionDuplicado(contacto);
+       }else{
         contactos.add(contacto);
         volcarContactos();
         return this;
+       }
     }
-    public boolean modificarContacto(String nombre, String apellidos, String nuevoTelefono, String nuevoEmail) {
+    public Libreta modificarContacto(String nombre, String apellidos, String nuevoTelefono, String nuevoEmail) throws NoEncontradoException {
         Contacto contacto = buscar(nombre, apellidos);
         if (contacto != null) {
         contacto.setTelefono(nuevoTelefono);
         contacto.setEmail(nuevoEmail);
         volcarContactos();
-        return true;
+        return this;
+        }else{
+            throw new NoEncontradoException();
         }
-    return false;
     }
     public ArrayList<Contacto> getContactos(){
         return contactos;
@@ -107,6 +112,5 @@ public class Libreta{
         System.err.println(ex);
         }
     }
-
 }
 
